@@ -7,12 +7,17 @@ if (!process.env.LOCAL_URL) {
 
 var proxy = httpProxy.createProxyServer({
     target: process.env.LOCAL_URL,
-    secure: false
+    secure: false,
+    changeOrigin: true
 }).listen(process.env.PORT);
 
-proxy.on('error', (err) => {
+proxy.on('error', (err, req, res) => {
+    res.writeHead(500, {
+        'Content-Type': 'text/plain'
+    });
+    res.end('Proxy: something went wrong.');
+
     console.error(err);
-    process.exit(1);
 });
 
 console.log(`Proxy listening on port ${process.env.PORT} forwarding traffic to: ${process.env.LOCAL_URL}`);
