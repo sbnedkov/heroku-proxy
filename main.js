@@ -6,7 +6,8 @@ if (!process.env.LOCAL_URL) {
 }
 
 var proxy = httpProxy.createProxyServer({
-    target: process.env.LOCAL_URL
+    target: process.env.LOCAL_URL,
+    secure: false
 }).listen(process.env.PORT);
 
 proxy.on('error', (err) => {
